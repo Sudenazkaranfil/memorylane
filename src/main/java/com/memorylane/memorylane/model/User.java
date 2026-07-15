@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +25,7 @@ public class User {
     private String email;
 
     @NotBlank
+    @JsonIgnore
     private String passwordHash;
 
     private LocalDateTime createdAt;

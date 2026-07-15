@@ -42,8 +42,10 @@ public class JwtService {
     public boolean isTokenValid(String token) {
         try {
             extractUsername(token);
+            System.out.println("Token geçerli!");
             return true;
         } catch (Exception e) {
+            System.out.println("Token geçersiz: " + e.getMessage());
             return false;
         }
     }
