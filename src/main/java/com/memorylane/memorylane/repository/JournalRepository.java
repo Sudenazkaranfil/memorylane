@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface JournalRepository extends JpaRepository<Journal, Long> {
     List<Journal> findByUserId(Long userId);
+
+    List<Journal> findByVisibility(Journal.Visibility visibility);
+    List<Journal> findByVisibilityAndTitleContainingIgnoreCaseOrVisibilityAndUserUsernameContainingIgnoreCase(
+            Journal.Visibility visibility1, String title,
+            Journal.Visibility visibility2, String username
+    );
 }

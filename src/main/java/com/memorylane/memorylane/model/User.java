@@ -30,6 +30,14 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    private String profileImageUrl;
+    private String firstName;
+    private String lastName;
+    private String bio;
+    private String location;
+    private String website;
+    private String favoriteDestination;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

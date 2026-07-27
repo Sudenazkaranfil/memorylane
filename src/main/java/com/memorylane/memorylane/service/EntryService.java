@@ -59,4 +59,20 @@ public class EntryService {
         entry.getPhotoUrls().add(imageUrl);
         return entryRepository.save(entry);
     }
+
+    public Entry update(Long journalId, Long entryId, String username, Entry entryData) {
+        Entry entry = entryRepository.findById(entryId)
+                .orElseThrow(() -> new RuntimeException("Giriş bulunamadı"));
+
+        if (!entry.getJournal().getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Bu girişe erişim yetkiniz yok");
+        }
+
+        if (entryData.getTextContent() != null) entry.setTextContent(entryData.getTextContent());
+        if (entryData.getLocationName() != null) entry.setLocationName(entryData.getLocationName());
+        if (entryData.getCanvasData() != null) entry.setCanvasData(entryData.getCanvasData());
+        if (entryData.getMood() != null) entry.setMood(entryData.getMood());
+
+        return entryRepository.save(entry);
+    }
 }

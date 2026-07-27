@@ -1,8 +1,11 @@
 package com.memorylane.memorylane.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "journals")
@@ -35,4 +38,8 @@ public class Journal {
     public enum Visibility {
         PRIVATE, PUBLIC
     }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "journal", fetch = FetchType.LAZY)
+    private List<Entry> entries = new ArrayList<>();
 }

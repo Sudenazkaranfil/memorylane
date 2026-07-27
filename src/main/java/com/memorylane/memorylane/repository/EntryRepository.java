@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface EntryRepository extends JpaRepository<Entry, Long> {
     List<Entry> findByJournalId(Long journalId);
+    void deleteByJournalId(Long journalId);
 }

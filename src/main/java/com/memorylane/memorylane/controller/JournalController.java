@@ -20,7 +20,7 @@ public class JournalController {
     public ResponseEntity<Journal> create(
             @AuthenticationPrincipal String username,
             @RequestBody Map<String, String> body) {
-        Journal journal = journalService.create(username, body.get("title"));
+        Journal journal = journalService.create(username, body.get("title"), body.get("visibility"));
         return ResponseEntity.ok(journal);
     }
 
@@ -30,11 +30,27 @@ public class JournalController {
         return ResponseEntity.ok(journalService.getMyJournals(username));
     }
 
+    @GetMapping("/public")
+    public ResponseEntity<List<Journal>> getPublicJournals(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy) {
+        return ResponseEntity.ok(journalService.getPublicJournals(search, sortBy));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(
             @AuthenticationPrincipal String username,
             @PathVariable Long id) {
         journalService.delete(id, username);
         return ResponseEntity.ok("Ajanda silindi");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Journal> update(
+            @AuthenticationPrincipal String username,
+            @PathVariable Long id,
+            @RequestBody Journal journalData) {
+        Journal journal = journalService.update(id, username, journalData);
+        return ResponseEntity.ok(journal);
     }
 }

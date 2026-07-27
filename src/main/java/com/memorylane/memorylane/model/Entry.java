@@ -30,6 +30,9 @@ public class Entry {
 
     private String mood;
 
+    @Column(columnDefinition = "TEXT")
+    private String canvasData;
+
     private LocalDateTime createdAt;
 
     @ElementCollection

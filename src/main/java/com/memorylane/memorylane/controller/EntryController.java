@@ -36,4 +36,14 @@ public class EntryController {
         entryService.delete(entryId, username);
         return ResponseEntity.ok("Giriş silindi");
     }
+
+    @PutMapping("/{entryId}")
+    public ResponseEntity<Entry> update(
+            @AuthenticationPrincipal String username,
+            @PathVariable Long journalId,
+            @PathVariable Long entryId,
+            @RequestBody Entry entryData) {
+        Entry entry = entryService.update(journalId, entryId, username, entryData);
+        return ResponseEntity.ok(entry);
+    }
 }
