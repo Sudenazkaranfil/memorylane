@@ -28,6 +28,9 @@ public class Journal {
     @Enumerated(EnumType.STRING)
     private Visibility visibility = Visibility.PRIVATE;
 
+    private Integer viewCount = 0;
+    private Integer saveCount = 0;
+
     private LocalDateTime createdAt;
 
     @PrePersist

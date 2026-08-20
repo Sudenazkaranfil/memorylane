@@ -30,7 +30,11 @@ public class EntryService {
         Journal journal = journalRepository.findById(journalId)
                 .orElseThrow(() -> new RuntimeException("Ajanda bulunamadı"));
 
-        if(!journal.getUser().getUsername().equals(username)) {
+        if (journal.getVisibility() == Journal.Visibility.PUBLIC) {
+            return entryRepository.findByJournalId(journalId);
+        }
+
+        if (!journal.getUser().getUsername().equals(username)) {
             throw new RuntimeException("Bu ajandaya erişim yetkiniz yok");
         }
 
