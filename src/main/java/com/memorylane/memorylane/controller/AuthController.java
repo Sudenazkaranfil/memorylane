@@ -33,7 +33,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         String token = userService.login(request.getEmail(), request.getPassword());
-        User user = userService.findByEmail(request.getEmail());
+        User user;
+        if (request.getEmail().contains("@")) {
+            user = userService.findByEmail(request.getEmail());
+        } else {
+            user = userService.getProfile(request.getEmail());
+        }
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "username", user.getUsername()

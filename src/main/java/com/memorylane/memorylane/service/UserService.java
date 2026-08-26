@@ -25,20 +25,13 @@ public class UserService {
             throw new RuntimeException("Bu username zaten kullanılıyor");
         }
 
-        String code = String.format("%06d", new Random().nextInt(999999));
-
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
-        user.setVerified(false);
-        user.setVerificationCode(code);
-        user.setVerificationCodeExpiry(LocalDateTime.now().plusMinutes(10));
+        user.setVerified(true); // Direkt doğrulanmış
 
-        userRepository.save(user);
-        emailService.sendVerificationCode(email, code);
-
-        return user;
+        return userRepository.save(user);
     }
 
     public String login(String emailOrUsername, String password) {
@@ -54,10 +47,6 @@ public class UserService {
 
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new RuntimeException("Şifre yanlış");
-        }
-
-        if (!user.getVerified()) {
-            throw new RuntimeException("EMAIL_NOT_VERIFIED");
         }
 
         return jwtService.generateToken(user.getUsername());
