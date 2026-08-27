@@ -12,6 +12,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import com.memorylane.memorylane.service.CloudinaryService;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,6 +22,7 @@ import java.util.Map;
 public class AuthController {
     private final UserService userService;
     private final EmailService emailService;
+    private final CloudinaryService cloudinaryService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
@@ -65,6 +69,17 @@ public class AuthController {
                 body.get("favoriteDestination")
         );
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/profile/image")
+    public ResponseEntity<?> uploadProfileImage(
+            @AuthenticationPrincipal String username,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        String imageUrl = cloudinaryService.upload(file);
+        User user = userService.getProfile(username);
+        user.setProfileImageUrl(imageUrl);
+        userService.save(user);
+        return ResponseEntity.ok(Map.of("profileImageUrl", imageUrl));
     }
 
     @PostMapping("/verify")
