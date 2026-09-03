@@ -7,6 +7,11 @@ import com.memorylane.memorylane.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
@@ -51,5 +56,34 @@ public class FollowService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
         return followRepository.countByFollower(user);
+    }
+    public List<Map<String, Object>> getFollowers(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+        return followRepository.findByFollowing(user).stream()
+                .map(follow -> {
+                    Map<String, Object> map = new java.util.HashMap<>();
+                    map.put("username", follow.getFollower().getUsername());
+                    map.put("firstName", follow.getFollower().getFirstName());
+                    map.put("lastName", follow.getFollower().getLastName());
+                    map.put("profileImageUrl", follow.getFollower().getProfileImageUrl());
+                    return map;
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getFollowing(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+        return followRepository.findByFollower(user).stream()
+                .map(follow -> {
+                    Map<String, Object> map = new java.util.HashMap<>();
+                    map.put("username", follow.getFollowing().getUsername());
+                    map.put("firstName", follow.getFollowing().getFirstName());
+                    map.put("lastName", follow.getFollowing().getLastName());
+                    map.put("profileImageUrl", follow.getFollowing().getProfileImageUrl());
+                    return map;
+                })
+                .collect(java.util.stream.Collectors.toList());
     }
 }

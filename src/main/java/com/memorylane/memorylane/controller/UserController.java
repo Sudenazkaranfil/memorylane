@@ -49,4 +49,13 @@ public class UserController {
                 "followingCount", following2
         ));
     }
+    @GetMapping("/{username}/followers")
+    public ResponseEntity<List<Map<String, Object>>> getFollowers(@PathVariable String username) {
+        return ResponseEntity.ok(followService.getFollowers(username));
+    }
+
+    @GetMapping("/{username}/following")
+    public ResponseEntity<List<Map<String, Object>>> getFollowing(@PathVariable String username) {
+        return ResponseEntity.ok(followService.getFollowing(username));
+    }
 }
