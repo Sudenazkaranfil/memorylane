@@ -31,14 +31,14 @@ public class EntryService {
                 .orElseThrow(() -> new RuntimeException("Ajanda bulunamadı"));
 
         if (journal.getVisibility() == Journal.Visibility.PUBLIC) {
-            return entryRepository.findByJournalId(journalId);
+            return entryRepository.findByJournalIdOrderByCreatedAtAsc(journalId);
         }
 
         if (!journal.getUser().getUsername().equals(username)) {
             throw new RuntimeException("Bu ajandaya erişim yetkiniz yok");
         }
 
-        return entryRepository.findByJournalId(journalId);
+        return entryRepository.findByJournalIdOrderByCreatedAtAsc(journalId);
     }
 
     public void delete(Long entryId, String username) {

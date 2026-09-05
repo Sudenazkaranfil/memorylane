@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EntryRepository extends JpaRepository<Entry, Long> {
-    List<Entry> findByJournalId(Long journalId);
+    List<Entry> findByJournalIdOrderByCreatedAtAsc(Long journalId);
     void deleteByJournalId(Long journalId);
 }
