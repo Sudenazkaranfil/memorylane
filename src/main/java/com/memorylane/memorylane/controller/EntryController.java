@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/journals/{journalId}/entries")
@@ -45,5 +47,10 @@ public class EntryController {
             @RequestBody Entry entryData) {
         Entry entry = entryService.update(journalId, entryId, username, entryData);
         return ResponseEntity.ok(entry);
+    }
+
+    @GetMapping("/entries/public-locations")
+    public ResponseEntity<List<Map<String, Object>>> getPublicLocations() {
+        return ResponseEntity.ok(entryService.getPublicLocations());
     }
 }
