@@ -35,6 +35,7 @@ public class User {
     private String location;
     private String website;
     private String favoriteDestination;
+    private String coverColor;
 
     @Column(name = "is_verified")
     private Boolean verified = false;

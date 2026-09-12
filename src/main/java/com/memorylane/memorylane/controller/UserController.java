@@ -58,4 +58,8 @@ public class UserController {
     public ResponseEntity<List<Map<String, Object>>> getFollowing(@PathVariable String username) {
         return ResponseEntity.ok(followService.getFollowing(username));
     }
+    @GetMapping("/popular")
+    public ResponseEntity<List<Map<String, Object>>> getPopularUsers() {
+        return ResponseEntity.ok(userService.getPopularUsers());
+    }
 }

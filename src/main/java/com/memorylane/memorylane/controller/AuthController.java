@@ -66,7 +66,8 @@ public class AuthController {
                 body.get("profileImageUrl"),
                 body.get("location"),
                 body.get("website"),
-                body.get("favoriteDestination")
+                body.get("favoriteDestination"),
+                body.get("coverColor")
         );
         return ResponseEntity.ok(user);
     }
