@@ -22,6 +22,12 @@ public class JournalService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
 
+        // Ajanda limit kontrolü
+        long journalCount = journalRepository.countByUser(user);
+        if (journalCount >= user.getJournalLimit()) {
+            throw new RuntimeException("JOURNAL_LIMIT_REACHED");
+        }
+
         Journal journal = new Journal();
         journal.setUser(user);
         journal.setTitle(title);

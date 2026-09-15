@@ -17,11 +17,21 @@ public class EntryController {
     private final EntryService entryService;
 
     @PostMapping
-    public ResponseEntity<Entry> create(
+    public ResponseEntity<?> create(
             @AuthenticationPrincipal String username,
             @PathVariable Long journalId,
             @RequestBody Entry entry) {
-        return ResponseEntity.ok(entryService.create(journalId, username, entry));
+        try {
+            return ResponseEntity.ok(entryService.create(journalId, username, entry));
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("PAGE_LIMIT_REACHED")) {
+                return ResponseEntity.status(403).body(Map.of(
+                        "error", "PAGE_LIMIT_REACHED",
+                        "message", "Bu ajandadaki sayfa limitine ulaştınız"
+                ));
+            }
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping

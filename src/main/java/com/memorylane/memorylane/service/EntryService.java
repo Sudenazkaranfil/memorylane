@@ -25,8 +25,15 @@ public class EntryService {
         Journal journal = journalRepository.findById(journalId)
                 .orElseThrow(() -> new RuntimeException("Ajanda bulunamadı"));
 
-        if(!journal.getUser().getUsername().equals(username)) {
+        if (!journal.getUser().getUsername().equals(username)) {
             throw new RuntimeException("Bu ajandaya erişim yetkiniz yok");
+        }
+
+        // Sayfa limit kontrolü
+        long entryCount = entryRepository.countByJournal(journal);
+        int pageLimit = journal.getUser().getPageLimit();
+        if (entryCount >= pageLimit) {
+            throw new RuntimeException("PAGE_LIMIT_REACHED");
         }
 
         entryData.setJournal(journal);

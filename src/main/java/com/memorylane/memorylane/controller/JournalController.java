@@ -19,11 +19,21 @@ public class JournalController {
     private final JournalService journalService;
 
     @PostMapping
-    public ResponseEntity<Journal> create(
+    public ResponseEntity<?> create(
             @AuthenticationPrincipal String username,
             @RequestBody Map<String, String> body) {
-        Journal journal = journalService.create(username, body.get("title"), body.get("visibility"));
-        return ResponseEntity.ok(journal);
+        try {
+            Journal journal = journalService.create(username, body.get("title"), body.get("visibility"));
+            return ResponseEntity.ok(journal);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("JOURNAL_LIMIT_REACHED")) {
+                return ResponseEntity.status(403).body(Map.of(
+                        "error", "JOURNAL_LIMIT_REACHED",
+                        "message", "Ajanda limitine ulaştınız"
+                ));
+            }
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping

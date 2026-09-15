@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -102,11 +103,7 @@ public class UserService {
     }
 
     public List<Map<String, Object>> getPopularUsers() {
-        return userRepository.findAll().stream()
-                .sorted((a, b) -> Math.toIntExact(
-                        followService.getFollowerCount(b.getUsername()) -
-                                followService.getFollowerCount(a.getUsername())))
-                .limit(10)
+        return userRepository.findPopularUsers(PageRequest.of(0, 10)).stream()
                 .map(user -> {
                     Map<String, Object> map = new HashMap<>();
                     map.put("username", user.getUsername());
@@ -123,5 +120,10 @@ public class UserService {
 
     public List<User> searchUsers(String query) {
         return userRepository.findByUsernameContainingIgnoreCase(query);
+    }
+
+    public User findByRevenueCatCustomerId(String customerId) {
+        return userRepository.findByRevenueCatCustomerId(customerId)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
     }
 }

@@ -1,5 +1,6 @@
 package com.memorylane.memorylane.repository;
 
+import com.memorylane.memorylane.model.User;
 import com.memorylane.memorylane.model.Journal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
@@ -14,4 +15,5 @@ public interface JournalRepository extends JpaRepository<Journal, Long> {
     List<Journal> findByVisibilityOrderByCreatedAtDesc(Journal.Visibility visibility);
     List<Journal> findByVisibilityOrderBySaveCountDesc(Journal.Visibility visibility);
     List<Journal> findByVisibilityOrderByViewCountDesc(Journal.Visibility visibility);
+    long countByUser(User user);
 }

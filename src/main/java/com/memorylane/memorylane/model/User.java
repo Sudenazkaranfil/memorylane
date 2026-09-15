@@ -55,4 +55,40 @@ public class User {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "subscription_plan")
+    private SubscriptionPlan subscriptionPlan = SubscriptionPlan.FREE;
+
+    private LocalDateTime subscriptionExpiresAt;
+    private String revenueCatCustomerId;
+
+    public enum SubscriptionPlan {
+        FREE, PLUS, PRO
+    }
+
+    public boolean isPro() {
+        return subscriptionPlan == SubscriptionPlan.PRO &&
+                (subscriptionExpiresAt == null ||
+                        subscriptionExpiresAt.isAfter(LocalDateTime.now()));
+    }
+
+    public boolean isPlus() {
+        return (subscriptionPlan == SubscriptionPlan.PLUS ||
+                subscriptionPlan == SubscriptionPlan.PRO) &&
+                (subscriptionExpiresAt == null ||
+                        subscriptionExpiresAt.isAfter(LocalDateTime.now()));
+    }
+
+    public int getJournalLimit() {
+        if (isPro()) return Integer.MAX_VALUE;
+        if (isPlus()) return 20;
+        return 5;
+    }
+
+    public int getPageLimit() {
+        if (isPro()) return Integer.MAX_VALUE;
+        if (isPlus()) return 40;
+        return 15;
+    }
 }

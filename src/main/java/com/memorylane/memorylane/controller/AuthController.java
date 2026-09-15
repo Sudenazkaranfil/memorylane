@@ -15,6 +15,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import com.memorylane.memorylane.service.CloudinaryService;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth")
@@ -50,8 +51,25 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getProfile(@AuthenticationPrincipal String username) {
-        return ResponseEntity.ok(userService.getProfile(username));
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal String username) {
+        User user = userService.getProfile(username);
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", user.getUsername());
+        response.put("email", user.getEmail());
+        response.put("firstName", user.getFirstName() != null ? user.getFirstName() : "");
+        response.put("lastName", user.getLastName() != null ? user.getLastName() : "");
+        response.put("bio", user.getBio() != null ? user.getBio() : "");
+        response.put("location", user.getLocation() != null ? user.getLocation() : "");
+        response.put("website", user.getWebsite() != null ? user.getWebsite() : "");
+        response.put("favoriteDestination", user.getFavoriteDestination() != null ? user.getFavoriteDestination() : "");
+        response.put("profileImageUrl", user.getProfileImageUrl() != null ? user.getProfileImageUrl() : "");
+        response.put("coverColor", user.getCoverColor() != null ? user.getCoverColor() : "");
+        response.put("subscriptionPlan", user.getSubscriptionPlan());
+        response.put("isPlus", user.isPlus());
+        response.put("isPro", user.isPro());
+        response.put("journalLimit", user.getJournalLimit());
+        response.put("pageLimit", user.getPageLimit());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/profile")
