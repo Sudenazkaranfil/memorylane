@@ -58,9 +58,4 @@ public class EntryController {
         Entry entry = entryService.update(journalId, entryId, username, entryData);
         return ResponseEntity.ok(entry);
     }
-
-    @GetMapping("/entries/public-locations")
-    public ResponseEntity<List<Map<String, Object>>> getPublicLocations() {
-        return ResponseEntity.ok(entryService.getPublicLocations());
-    }
 }
