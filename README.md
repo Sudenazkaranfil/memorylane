@@ -1,4 +1,4 @@
-# MemoryLane — Backend
+# Seyahood — Backend
 
 Spring Boot ile geliştirilmiş RESTful API. Kullanıcı kimlik doğrulama, ajanda yönetimi, canvas editör verisi, fotoğraf yükleme ve harita entegrasyonu sağlar.
 
@@ -43,7 +43,7 @@ CREATE DATABASE memorylane;
 
 3. `src/main/resources/application.properties` dosyası oluştur
 ```properties
-spring.application.name=memorylane
+spring.application.name=seyahood
 spring.datasource.url=jdbc:postgresql://localhost:5432/memorylane
 spring.datasource.username=postgres
 spring.datasource.password=YOUR_PASSWORD
